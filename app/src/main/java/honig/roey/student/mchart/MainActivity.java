@@ -1,7 +1,9 @@
 package honig.roey.student.mchart;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -14,6 +16,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private ArrayList<PointDataSet> pointDataSets = new ArrayList<>();
     private List<Entry> entries = new ArrayList<Entry>();
+    private LineChart chart;
+    private LineData lineData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // LineChart is initialized from xml
-        LineChart chart = (LineChart) findViewById(R.id.chart);
+        chart = (LineChart) findViewById(R.id.chart);
 
         setInitial_XY_Values();
         addDataToChart();
@@ -30,11 +34,25 @@ public class MainActivity extends AppCompatActivity {
         dataSet.setColor(R.color.colorAccent);
         dataSet.setValueTextColor(R.color.colorPrimary); // styling, ...
 
-        LineData lineData = new LineData(dataSet);
+        lineData = new LineData(dataSet);
         chart.setData(lineData);
         chart.invalidate(); // refresh
 
+        FloatingActionButton refresh = findViewById(R.id.floatingActionButton);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateY_Value(0, 7.2f);
 
+            }
+        });
+
+
+    }
+
+    private void updateY_Value(int position, float newY) {
+        entries.get(position).setY(newY);
+        chart.invalidate(); // refresh
     }
 
     private void addDataToChart() {
