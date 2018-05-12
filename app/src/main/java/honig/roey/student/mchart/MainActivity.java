@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private BarChart chart;
     // the labels that should be drawn on the XAxis
     private final String[] names = new String[] { "Roey Regev", "Roey Honig", "Idan Reshef", "Tal Efroni" };
+    private IAxisValueFormatter formatter;
 
 
 
@@ -44,10 +45,16 @@ public class MainActivity extends AppCompatActivity {
         // style
         //chart.getXAxis().setTextSize(20); // in dp units
 
+        formatter = new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return names[(int) (value-1)];
+            }
+        };
 
-        // .. and more styling options
-        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        chart.setPinchZoom(true); // zooming X & Y Axis at one gesture
+
+
+
 
         setInitial_Bars_Values();
         addDataToChart();
@@ -57,22 +64,15 @@ public class MainActivity extends AppCompatActivity {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //updateY_Value(0, 7.2f);
+                updateY_Value(1, 18f);
                 //appendNewY_Value(5);
 
             }
         });
 
-        IAxisValueFormatter formatter = new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return names[(int) (value-1)];
-            }
-        };
 
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
-        xAxis.setValueFormatter(formatter);
+
+
 
 
 
@@ -84,21 +84,34 @@ public class MainActivity extends AppCompatActivity {
         chart.setData(barData);
         chart.setFitBars(true); // make the x-axis fit exactly all bars
 
+        // .. and more styling options
+        //chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        chart.setPinchZoom(true); // zooming X & Y Axis at one gesture
+
         // disable highlight of values by the user's gestures
         chart.setHighlightPerDragEnabled(false);
         chart.setHighlightPerTapEnabled(false);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
+        xAxis.setValueFormatter(formatter);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        chart.getAxisLeft().setAxisMinimum(0f);
+        chart.getAxisRight().setAxisMinimum(0f);
 
         // HighLight the Max Value
         chart.highlightValue(4,0);
         chart.invalidate(); // refresh
     }
 
-    /*
+
     private void updateY_Value(int position, float newY) {
         entries.get(position).setY(newY);
-        chart.invalidate(); // refresh
+        set = new BarDataSet(entries, "BarDataSet");
+        setBarChart(set);
     }
-    */
+
 
 
     private void addDataToChart() {
