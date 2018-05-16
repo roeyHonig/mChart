@@ -10,6 +10,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         xAxis.setValueFormatter(formatter);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //xAxis.setTextSize();
 
 
         chart.getAxisLeft().setAxisMinimum(0f);
@@ -111,11 +113,16 @@ public class MainActivity extends AppCompatActivity {
         // Sets the Legend enabled or disabled
         chart.getLegend().setEnabled(false);
 
-
-        // HighLight the Max Value
         //chart.setFitBars(true); // make the x-axis fit \ or not exactly all bars
+        // only 3 bars at the viewport
         chart.setVisibleXRange(0,3);
+        // HighLight the Max Value
         chart.highlightValue(4,0);
+        // set an emphty ("") description in the right bottom corrner of the chart
+        Description description = new Description();
+        description.setText("");
+        chart.setDescription(description);
+
         chart.invalidate(); // refresh
     }
 
