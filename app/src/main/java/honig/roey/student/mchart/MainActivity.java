@@ -10,6 +10,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private BarData barData;
     private BarChart chart;
     // the labels that should be drawn on the XAxis
-    private final String[] names = new String[] { "Roey Regev", "Roey Honig", "Idan Reshef", "Tal Efroni" };
+    private final String[] names = new String[] { "Roey Regev", "Roey Honig", "Idan Reshef", "Tal Efroni" , "shear Yeari" , "toolip nice" , "rotem valzer" };
     private IAxisValueFormatter formatter;
 
 
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         barData = new BarData(set);
         barData.setBarWidth(0.9f); // set custom bar width
         chart.setData(barData);
-        chart.setFitBars(true); // make the x-axis fit exactly all bars
+
 
         // .. and more styling options
         //chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -93,14 +94,27 @@ public class MainActivity extends AppCompatActivity {
         chart.setHighlightPerTapEnabled(false);
 
         XAxis xAxis = chart.getXAxis();
+
+        /*
+        This will prevent the formatter from drawing duplicate axis labels (caused by axis intervals < 1).
+        As soon as the "zoom level" of the chart is high enough, it will stop recalculating smaller intervals.
+         */
         xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
+
         xAxis.setValueFormatter(formatter);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
 
         chart.getAxisLeft().setAxisMinimum(0f);
         chart.getAxisRight().setAxisMinimum(0f);
 
+        // Sets the Legend enabled or disabled
+        chart.getLegend().setEnabled(false);
+
+
         // HighLight the Max Value
+        //chart.setFitBars(true); // make the x-axis fit \ or not exactly all bars
+        chart.setVisibleXRange(0,3);
         chart.highlightValue(4,0);
         chart.invalidate(); // refresh
     }
@@ -128,7 +142,9 @@ public class MainActivity extends AppCompatActivity {
         pointDataSets.add(new PointDataSet(1f,1f));
         pointDataSets.add(new PointDataSet(2f,3f));
         pointDataSets.add(new PointDataSet(3f,2f));
-
         pointDataSets.add(new PointDataSet(4f,7f));
+        pointDataSets.add(new PointDataSet(5f,3f));
+        pointDataSets.add(new PointDataSet(6f,2f));
+        pointDataSets.add(new PointDataSet(7f,2f));
     }
 }
